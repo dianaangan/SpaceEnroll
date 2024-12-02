@@ -1,0 +1,47 @@
+﻿@model SpaceEnroll.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    <link rel="stylesheet" href="~/css/LoginAndSignup.css" asp-append-version="true">
+}
+
+<div class="boxform">
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+        <div class="signup">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger custom-error">@TempData["ErrorMessage"]</div>
+            }
+            <form method="post" asp-action="Login" asp-controller="Account">
+                <label>Log in</label>
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <input type="text" class="form-control" asp-for="Username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    .alert.custom-error {
+        position: absolute;
+        top: 77px;
+        left: 58%;
+        transform: translateX(-50%);
+        width: 80%;
+        z-index: 1000;
+        color: red;
+    }
+</style>

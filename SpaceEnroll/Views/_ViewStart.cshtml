@@ -1,0 +1,10 @@
+﻿@{
+    if (Context.Request.Path.StartsWithSegments("/Admin"))
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}

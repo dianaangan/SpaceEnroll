@@ -1,0 +1,79 @@
+﻿@model SpaceEnroll.Models.AddStudentViewModel
+
+@{
+    ViewData["Title"] = "Add Student";
+    <link rel="stylesheet" href="~/css/Student.css" asp-append-version="true">
+}
+
+<div class="add-form-container">
+    <div class="add-form">
+        <h2 id="formTitle">STUDENT INFORMATION</h2>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger custom-error" role="alert" id="tempDataAlert">
+                <span>@TempData["ErrorMessage"]</span>
+                <button type="button" class="close-btn" aria-label="Close" onclick="closeAlert()">&times;</button>
+            </div>
+        }
+
+        <form asp-action="StudentAdd" method="post" id="studentForm">
+            <!-- Validation Summary -->
+            <div class="validation-summary">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" placeholder="First Name" asp-for="FirstName" required />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Last Name" asp-for="LastName" required />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Email Address" asp-for="Email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Student ID" asp-for="StudentId" required />
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="Course" required>
+                    <option value="" disabled selected>Select Course</option>
+                    <option value="BSIT">BSIT</option>
+                    <option value="BSIS">BSIS</option>
+                    <option value="ACT">ACT</option>
+                </select>
+                <span asp-validation-for="Course" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="Year" required>
+                    <option value="" disabled selected>Select Year</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-buttons">
+                <button type="button" class="cancel-btn" onclick="location.href='@Url.Action("StudentList", "Admin")'">CANCEL</button>
+                <button type="submit" class="save-btn">SAVE</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        Html.PartialAsync("_ValidationScriptsPartial").GetAwaiter().GetResult();
+    }
+    <script>
+        function closeAlert() {
+            document.getElementById("tempDataAlert").style.display = "none";
+        }
+    </script>
+}
+

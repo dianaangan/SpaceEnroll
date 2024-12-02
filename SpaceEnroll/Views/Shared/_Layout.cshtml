@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Dashboard</title>
+
+    <!-- Link to CSS files -->
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true">
+    @RenderSection("Styles", required: false)
+</head>
+<body class="bg-purple">
+    <div class="stars">
+        <div class="custom-navbar">
+            <div class="brand-logo">
+                <img src="http://salehriaz.com/404Page/img/logo.svg" width="80px" alt="Brand Logo">
+            </div>
+        </div>
+        <div class="objects">
+            <img class="object_rocket" src="http://salehriaz.com/404Page/img/rocket.svg" width="40px" alt="Rocket">
+            <div class="earth-moon">
+                <img class="object_earth" src="http://salehriaz.com/404Page/img/earth.svg" width="100px" alt="Earth">
+                <img class="object_moon" src="http://salehriaz.com/404Page/img/moon.svg" width="80px" alt="Moon">
+            </div>
+            <div class="box_astronaut">
+                <img class="object_astronaut" src="http://salehriaz.com/404Page/img/astronaut.svg" width="140px" alt="Astronaut">
+            </div>
+        </div>
+        <div class="glowing_stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+        </div>
+
+        <div id="stars"></div>
+
+        <!-- This is where the content of each view will be rendered -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

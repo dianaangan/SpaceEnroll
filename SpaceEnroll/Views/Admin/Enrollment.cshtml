@@ -1,0 +1,208 @@
+﻿@model SpaceEnroll.Models.AddEnrollmentViewModel
+
+@{
+    ViewData["Title"] = "Enrollment";
+    <link rel="stylesheet" href="~/css/Student.css" asp-append-version="true">
+}
+
+<div class="container1">
+    <h3 class="h3-first"><i class="fa1 fa-solid fa-user-graduate fa1-2x"></i>Student Information</h3>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger custom-error" role="alert" id="tempDataAlert">
+            <span>@TempData["ErrorMessage"]</span>
+            <button type="button" class="close-btn" aria-label="Close" onclick="closeAlert()">&times;</button>
+        </div>
+    }
+
+    <div class="form-group-student">
+        <input type="text" id="StudentId" placeholder="Student ID" asp-for="StudentId" required class="form-control" />
+        <span asp-validation-for="StudentId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group-student">
+        <input type="text" class="form-control" id="StudentName" readonly placeholder="" />
+    </div>
+
+    <div class="form-group-student">
+        <input type="text" class="form-control" id="YearLevel" readonly placeholder="" />
+    </div>
+
+    <div class="form-group-student">
+        <input type="text" class="form-control" id="Course" readonly placeholder="" />
+    </div>
+
+    <div class="form-group-student">
+        <input type="text" class="form-control" placeholder="Date Enrolled" asp-for="DateEnrolled" value="" required
+               onfocus="this.type='date'" onblur="if(!this.value) this.type='text'" />
+        <span asp-validation-for="DateEnrolled" class="text-danger"></span>
+    </div>
+
+    <div class="form-group-student">
+        <input type="text" class="form-control" placeholder="Encoder" asp-for="Encoder" required />
+        <span asp-validation-for="Encoder" class="text-danger"></span>
+    </div>
+
+</div>
+
+<div class="container2">
+    <h3 class="h3-Second"><i class="fa1 fa-solid fa-book fa1-2x"></i>Subject Selection</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>EDP Code</th>
+                <th>Subject</th>
+                <th>Units</th>
+                <th>Days</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div class="container3">
+    <h3 class="h3-Third"><i class="fa1 fa-solid fa-building-columns fa1-1x"></i>Schedule Information</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>EDP Code</th>
+                <th>Subject</th>
+                <th>Units</th>
+                <th>Days</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadSubjects();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadSubjects();
+    });
+
+    async function loadSubjects() {
+        try {
+            const response = await fetch('/Admin/GetSubjectsWithSchedule');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const subjects = await response.json();
+
+            const tbody = document.querySelector('.container2 table tbody');
+            tbody.innerHTML = ''; // Clear existing content
+
+            subjects.forEach(subject => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${subject.edpCode}</td>
+                    <td>${subject.subject}</td>
+                    <td>${subject.units}</td>
+                    <td>${subject.days}</td>
+                    <td>${subject.time}</td>
+                    <td>
+                      <button class="btn-add" onclick="addToSchedule(this)" style="background: none; border: none; cursor: pointer; display: inline;">
+                                       <i class="fa-solid  fa-calendar-plus fa-lg" style="color:#6d44b8;"></i>
+                       </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Error loading subjects:', error);
+            alert('Failed to load subjects. Please check the console for details.');
+        }
+    }
+
+    function addToSchedule(button) {
+        // Get the row that contains the button
+        const sourceRow = button.closest('tr');
+
+        // Create a new row for container3
+        const newRow = sourceRow.cloneNode(true);
+
+        // Change the button to a remove button
+        const buttonCell = newRow.querySelector('td:last-child');
+        buttonCell.innerHTML = `
+                   <button class="btn-remove" onclick="removeFromSchedule(this)" style="background: none; border: none; cursor: pointer; display: inline;">
+                                    <i class="fa-solid  fa-calendar-xmark fa-lg" style="color: #6d44b8"></i>
+                   </button>
+        `;
+
+        // Add the new row to container3
+        const container3Tbody = document.querySelector('.container3 table tbody');
+        container3Tbody.appendChild(newRow);
+
+        // Remove the original row from container2
+        sourceRow.remove();
+    }
+
+    function removeFromSchedule(button) {
+        // Get the row that contains the button
+        const sourceRow = button.closest('tr');
+
+        // Create a new row for container2
+        const newRow = sourceRow.cloneNode(true);
+
+        // Change back to add button
+        const buttonCell = newRow.querySelector('td:last-child');
+        buttonCell.innerHTML = `
+                <button class="btn-add" onclick="addToSchedule(this)" style="background: none; border: none; cursor: pointer; display: inline;">
+                         <i class="fa-solid fa-calendar-plus fa-lg" style="color: #6d44b8;"></i>
+                </button>
+        `;
+
+        // Add the row back to container2
+        const container2Tbody = document.querySelector('.container2 table tbody');
+        container2Tbody.appendChild(newRow);
+
+        // Remove the row from container3
+        sourceRow.remove();
+    }
+
+    document.getElementById("StudentId").addEventListener("keypress", function (event) {
+        // Check if Enter key was pressed
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the entered StudentId value
+            const studentId = document.getElementById("StudentId").value;
+
+            if (studentId) {
+                // Fetch student info from the controller via AJAX
+                fetch(`/Admin/GetStudentInfo?studentId=${studentId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Populate the student fields if student is found
+                            document.getElementById("StudentName").value = `${data.student.lastName}, ${data.student.firstName}`;
+                            document.getElementById("YearLevel").value = data.student.year;
+                            document.getElementById("Course").value = data.student.course;
+                        } else {
+                            // Show error message if student not found
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching student data:', error);
+                        alert('Error fetching student data.');
+                    });
+            } else {
+                alert("Please enter a Student ID.");
+            }
+        }
+    });
+
+</script>

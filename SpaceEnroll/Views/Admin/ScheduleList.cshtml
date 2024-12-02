@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Subject List";
+}
+<link rel="stylesheet" href="~/css/Student.css" asp-append-version="true">
+
+@model List<SpaceEnroll.Models.Entities.Schedule>
+
+<div class="container">
+    <div class="buttons">
+        <button class="add-btn" onclick="location.href='@Url.Action("ScheduleAdd", "Admin")'">➕ ADD</button>
+        <button class="delete-btn" onclick="deleteSelected()">🗑️ Delete Selected</button>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search ID" oninput="searchSchedule()">
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)"></th>
+                <th>Subject Code</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Days</th>
+                <th>Section</th>
+                <th>Room</th>
+                <th>School Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="scheduleTableBody">
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="10" style="text-align: center;">No schedule found.</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var schedule in Model)
+                {
+                    <tr>
+                        <td><input type="checkbox" class="schedule-checkbox" value="@schedule.SubjectCode"></td>
+                        <td>@schedule.SubjectCode</td>
+                        <td>@schedule.StartTime.ToString("hh:mm tt")</td>
+                        <td>@schedule.EndTime.ToString("hh:mm tt")</td>
+                        <td>@schedule.Days</td>
+                        <td>@schedule.Section</td>
+                        <td>@schedule.Room</td>
+                        <td>@schedule.SchoolYear</td>
+                        <td>
+                            <button class="button" onclick="location.href='@Url.Action("ScheduleEdit", "Admin", new { SubjectCode = schedule.SubjectCode })'" style="background: none; border: none; cursor: pointer; display: inline;">
+                                <i class="fa-solid fa-pen-to-square fa-lg" style="color: #B197FC;"></i>
+                            </button>
+                            <form asp-controller="Admin" asp-action="ScheduleDelete" method="post" onsubmit="return confirm('Are you sure you want to delete this schedule?');" style="display: inline;">
+                                <input type="hidden" name="SubjectCode" value="@schedule.SubjectCode" />
+                                <button type="submit" class="delete-btn" style="display: inline;">
+                                    <i class="fa-solid fa-trash fa-sm" style="color: #B197FC;"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    function searchSchedule() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('#scheduleTableBody tr');
+        rows.forEach(row => {
+            const id = row.cells[1]?.textContent; 
+            if (id) {
+                row.style.display = id.toLowerCase().includes(input) ? '' : 'none';
+            }
+        });
+    }
+
+    function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('.schedule-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
+
+    function deleteSelected() {
+        const checkboxes = document.querySelectorAll('.schedule-checkbox:checked');
+        const subjectCodes = Array.from(checkboxes).map(cb => cb.value);
+
+        if (subjectCodes.length > 0 && confirm('Are you sure you want to delete the item selected?')) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '@Url.Action("ScheduleDeleteMultiple", "Admin")'; 
+
+                subjectCodes.forEach(subjectCodes => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'subjectCodes';
+                hiddenInput.value = subjectCodes;
+                form.appendChild(hiddenInput);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+

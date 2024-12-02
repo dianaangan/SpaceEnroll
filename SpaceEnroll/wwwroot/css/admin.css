@@ -1,0 +1,551 @@
+﻿@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css); 
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
+@import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500');
+
+.container {
+    position: relative;
+    z-index: 2000;
+    width: 45%;
+    height: 500px;
+    margin: 150px auto;
+    background: linear-gradient(to top, #d299c2 0%, #fef9d7 100%);
+    padding: 25px;
+    border-radius: 8px;
+    overflow-y: auto;
+    /* Enhanced animations */
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    animation: fadeInUp 0.8s ease-out forwards, glowPulse 2s ease-in-out infinite, scaleIn 0.8s ease-out forwards;
+    box-shadow: 0 0 20px rgba(210, 153, 194, 0);
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 20px rgba(210, 153, 194, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(210, 153, 194, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 20px rgba(210, 153, 194, 0.2);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: translateY(30px) scale(0.95);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Optional: Add animation for the gradient background */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, #d299c2 0%, #fef9d7 100%);
+    border-radius: 8px;
+    opacity: 0;
+    animation: gradientFade 1s ease-out forwards;
+    z-index: -1;
+}
+
+@keyframes gradientFade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Optional: Add hover effect */
+.container:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 30px rgba(210, 153, 194, 0.4);
+}
+
+.buttons {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+    .buttons button {
+        background-color: #5bc0de;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        margin-right: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background-color 0.3s; /* Transition effect for button hover */
+    }
+
+        .buttons button:hover {
+            background-color: #46b8da;
+        }
+
+    .buttons .add-btn {
+        background-color: #5cb85c;
+    }
+
+        .buttons .add-btn:hover {
+            background-color: #4cae4c;
+        }
+
+    .buttons .delete-btn {
+        background-color: #d9534f;
+    }
+
+        .buttons .delete-btn:hover {
+            background-color: #d43f3a;
+        }
+
+.search-box {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+    .search-box input {
+        padding: 8px;
+        width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+    table thead th {
+        background: #f9f9f9;
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+        color: #430f58;
+    }
+
+    table tbody td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    table tbody tr.editing {
+        background-color: #e9ffe9; /* Highlight the editing row */
+    }
+
+    table tbody td input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    table tbody td .edit-btn,
+    table tbody td .delete-btn {
+        background: transparent;
+        border: none;
+        color: #5bc0de;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+        table tbody td .edit-btn:hover,
+        table tbody td .delete-btn:hover {
+            color: #46b8da; /* Change color on hover */
+        }
+
+.brand-logo {
+    margin-left: 2440px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+:root {
+    --deep-space: #f0e6ff;
+    --nebula: #d9c2ff;
+    --stardust: #bf9fff;
+    --cosmic-latte: #330066;
+    --supernova: #6600cc;
+}
+
+body {
+    background: url(https://www.salehriaz.com/404Page/img/bg_purple.png);
+    background-repeat: repeat-x;
+    background-size: cover;
+    background-position: left top;
+    height: 100%;
+    overflow: hidden;
+}
+
+.fa-2x {
+    font-size: 2em;
+}
+
+.fa {
+    position: relative;
+    display: table-cell;
+    width: 65px;
+    height: 55px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 25px;
+    color: #430f58
+}
+
+.central-body {
+    padding: 17% 5% 10% 5%;
+    text-align: center;
+}
+
+.main-menu {
+    background: linear-gradient(to top, #d299c2 0%, #fef9d7 100%);
+    border-right: 1px solid var(--stardust);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    width: 63px;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    transform: translateZ(0) scale(1, 1);
+    z-index: 1000;
+}
+
+    .main-menu:hover,
+    nav.main-menu.expanded {
+        width: 250px;
+        overflow: visible;
+    }
+
+    .main-menu > ul {
+        margin: 7px 0;
+    }
+
+    .main-menu li {
+        position: relative;
+        display: block;
+        width: 250px;
+    }
+
+        .main-menu li > a {
+            position: relative;
+            display: table;
+            border-collapse: collapse;
+            border-spacing: 0;
+            color: var(--cosmic-latte);
+            font-family: 'Titillium Web', arial;
+            font-size: 14px;
+            text-decoration: none;
+            transform: translateZ(0) scale(1, 1);
+            transition: all 0.3s ease;
+        }
+
+    .main-menu .nav-icon {
+        position: relative;
+        display: table-cell;
+        width: 60px;
+        height: 36px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 18px;
+    }
+
+    .main-menu .nav-text {
+        position: relative;
+        display: table-cell;
+        vertical-align: middle;
+        width: 190px;
+        font-family: 'Titillium Web', sans-serif;
+    }
+
+    .main-menu > ul.logout {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+
+.no-touch .scrollable.hover {
+    overflow-y: hidden;
+}
+
+    .no-touch .scrollable.hover:hover {
+        overflow-y: auto;
+        overflow: visible;
+    }
+
+a:hover,
+a:focus {
+    text-decoration: none;
+}
+
+nav {
+    user-select: none;
+}
+
+    nav ul,
+    nav li {
+        outline: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-menu li:hover > a,
+    nav.main-menu li.active > a,
+    .dropdown-menu > li > a:hover,
+    .dropdown-menu > li > a:focus,
+    .dropdown-menu > .active > a,
+    .dropdown-menu > .active > a:hover,
+    .dropdown-menu > .active > a:focus,
+    .no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
+    .dashboard-page nav.dashboard-menu ul li.active a {
+        color: var(--cosmic-latte);
+        background-color: var(--stardust);
+        transition: all 0.3s ease;
+    }
+
+.main-menu li > a:hover {
+    background-color: var(--stardust);
+}
+
+.area {
+    float: left;
+    background: var(--deep-space);
+    width: 100%;
+    height: 100%;
+}
+
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+}
+
+.object_rocket {
+    z-index: 95;
+    position: absolute;
+    top: 80%;
+    pointer-events: none;
+    animation: rocket-movement 50s linear infinite;
+}
+
+
+.objects img {
+    z-index: 90;
+    pointer-events: none;
+}
+
+
+.object_earth {
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    z-index: 90;
+}
+
+.object_moon {
+    position: absolute;
+    top: 12%;
+    left: 25%;
+}
+
+.earth-moon {
+}
+
+.object_astronaut {
+    animation: rotate-astronaut 200s infinite linear both alternate;
+}
+
+.box_astronaut {
+    z-index: 110 !important;
+    position: absolute;
+    top: 60%;
+    right: 8%;
+    will-change: transform;
+    animation: move-astronaut 50s infinite linear both alternate;
+}
+
+#stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+@keyframes moveStar {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-100vh);
+    }
+}
+
+#title {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    color: #FFF;
+    text-align: center;
+    font-weight: 300;
+    font-size: 50px;
+    letter-spacing: 10px;
+    margin-top: -60px;
+    padding-left: 10px;
+}
+
+    #title .span1 {
+        background: -webkit-linear-gradient(#6B5B94, #F7B7A3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #title .span2 {
+        background: -webkit-linear-gradient(#FEF253, #FF7300);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #title .span3 {
+        background: -webkit-linear-gradient(#0096D6, #DDAF00);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #title .span4 {
+        background: -webkit-linear-gradient(#2C3E50, #3498DB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #title .span5 {
+        background: -webkit-linear-gradient(#FF0080, #FF8C00);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+@keyframes rocket-movement {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(1200px, -850px);
+    }
+}
+
+@-moz-keyframes move-astronaut {
+    100% {
+        -moz-transform: translate(-160px, -160px);
+    }
+}
+
+@-webkit-keyframes move-astronaut {
+    100% {
+        -webkit-transform: translate(-160px, -160px);
+    }
+}
+
+@keyframes move-astronaut {
+    100% {
+        -webkit-transform: translate(-160px, -160px);
+        transform: translate(-160px, -160px);
+    }
+}
+
+@-moz-keyframes rotate-astronaut {
+    100% {
+        -moz-transform: rotate(-720deg);
+    }
+}
+
+@-webkit-keyframes rotate-astronaut {
+    100% {
+        -webkit-transform: rotate(-720deg);
+    }
+}
+
+@keyframes rotate-astronaut {
+    100% {
+        -webkit-transform: rotate(-720deg);
+        transform: rotate(-720deg);
+    }
+}
+
+
+
+.btn-go-home {
+    position: relative;
+    z-index: 200;
+    margin: 15px auto;
+    width: 100px;
+    padding: 10px 15px;
+    border: 1px solid #FFCB39;
+    border-radius: 100px;
+    font-weight: 400;
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-size: 11px;
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    -ms-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+    font-family: 'Dosis', sans-serif;
+    font-weight: 300;
+}
+
+    .btn-go-home:hover {
+        background-color: #FFCB39;
+        color: #fff;
+        transform: scale(1.05);
+        box-shadow: 0px 20px 20px rgba(0,0,0,0.1);
+    }
