@@ -16,9 +16,5 @@ namespace SpaceEnroll.Models
 
         [Required]
         public string Encoder { get; set; }
-
-        public Subject? Subject { get; set; }
-
-        public Schedule? Schedule { get; set; }
     }
 }

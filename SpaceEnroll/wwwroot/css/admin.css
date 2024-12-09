@@ -525,15 +525,15 @@ nav {
     margin: 15px auto;
     width: 100px;
     padding: 10px 15px;
-    border: 1px solid #FFCB39;
+    border: 2px solid #d9c2ff;
     border-radius: 100px;
     font-weight: 400;
     display: block;
-    color: white;
+    color: #d9c2ff;
     text-align: center;
     text-decoration: none;
-    letter-spacing: 2px;
-    font-size: 11px;
+    letter-spacing: 3px;
+    font-size: 13px;
     -webkit-transition: all 0.3s ease-in;
     -moz-transition: all 0.3s ease-in;
     -ms-transition: all 0.3s ease-in;
@@ -544,7 +544,7 @@ nav {
 }
 
     .btn-go-home:hover {
-        background-color: #FFCB39;
+        background-color: #d9c2ff;
         color: #fff;
         transform: scale(1.05);
         box-shadow: 0px 20px 20px rgba(0,0,0,0.1);

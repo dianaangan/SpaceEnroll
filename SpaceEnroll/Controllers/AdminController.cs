@@ -53,10 +53,53 @@ namespace SpaceEnroll.Controllers
                 return Json(new { error = "Failed to load subjects" });
             }
         }
- 
 
+        [HttpPost]
+        public async Task<IActionResult> SaveEnrollment([FromBody] List<Enrollment> enrollments)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { success = false, message = "Invalid enrollment data" });
+                }
 
-    public IActionResult StudentEdit()
+                if (enrollments == null || !enrollments.Any())
+                {
+                    return Json(new { success = false, message = "No enrollment data provided" });
+                }
+
+                // Check if student exists
+                var studentId = enrollments.First().StudentId;
+                var studentExists = await dbContext.Students.AnyAsync(s => s.StudentId == studentId);
+                if (!studentExists)
+                {
+                    return Json(new { success = false, message = "Student ID does not exist" });
+                }
+
+                // Check if student is already enrolled
+                var existingEnrollment = await dbContext.Enrollments
+                    .AnyAsync(e => e.StudentId == studentId);
+                if (existingEnrollment)
+                {
+                    return Json(new { success = false, message = "Student is already enrolled" });
+                }
+
+                // Save enrollments to database
+                foreach (var enrollment in enrollments)
+                {
+                    dbContext.Enrollments.Add(enrollment);
+                }
+                await dbContext.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        public IActionResult StudentEdit()
         {
             return View();
         }
@@ -102,12 +145,6 @@ namespace SpaceEnroll.Controllers
                 if (!IsNumber(viewModel.StudentId))
                 {
                     TempData["ErrorMessage"] = "Student ID must be a number.";
-                    return View(viewModel);
-                }
-
-                if (!IsLetters(viewModel.FirstName) || !IsLetters(viewModel.LastName))
-                {
-                    TempData["ErrorMessage"] = "First name and last name must contain only letters.";
                     return View(viewModel);
                 }
 

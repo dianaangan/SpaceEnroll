@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <BaseOutputPath>D:\Tuna Files\SpaceEnroll\SpaceEnroll\bin</BaseOutputPath>
+    <BaseOutputPath>D:\Tuna Files\SpaceEnroll\SpaceEnroll\bin\Debug\net8.0\runtimes\Debug\net8.0</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

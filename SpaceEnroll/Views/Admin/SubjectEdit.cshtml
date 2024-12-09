@@ -4,87 +4,88 @@
     <link rel="stylesheet" href="~/css/Student.css" asp-append-version="true">
 }
 
-<div class="addRequisite-form">
-        <h2 id="formTitle">EDIT SUBJECT</h2>
+<div class="addRequisite-form-container">
+    <div class="addRequisite-form">
+            <h2 id="formTitle">EDIT SUBJECT</h2>
 
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger custom-error" role="alert" id="tempDataAlert">
-                <span>@TempData["ErrorMessage"]</span>
-                <button type="button" class="close-btn" aria-label="Close" onclick="closeAlert()">&times;</button>
-            </div>
-        }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger custom-error" role="alert" id="tempDataAlert">
+                    <span>@TempData["ErrorMessage"]</span>
+                    <button type="button" class="close-btn" aria-label="Close" onclick="closeAlert()">&times;</button>
+                </div>
+            }
 
-        <form asp-controller="Admin" asp-action="SubjectEdit" method="post" id="subjectForm">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-controller="Admin" asp-action="SubjectEdit" method="post" id="subjectForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="SubjectCode" />
+                <input type="hidden" asp-for="SubjectCode" />
 
-            <div class="form-group">
-                <input type="text" required placeholder="Description" asp-for="Description">
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <input type="text" required placeholder="Description" asp-for="Description">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <select required asp-for="Units">
-                    <option value="">Select Unit</option>
-                    @for (int i = 1; i <= 3; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </select>
-                <span asp-validation-for="Units" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <select required asp-for="Units">
+                        <option value="">Select Unit</option>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Units" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <select required asp-for="Category">
-                    <option value="">Select Category</option>
-                    <option value="LECTURE">LECTURE</option>
-                    <option value="LABORATORY">LABORATORY</option>
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <select required asp-for="Category">
+                        <option value="">Select Category</option>
+                        <option value="LECTURE">LECTURE</option>
+                        <option value="LABORATORY">LABORATORY</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
             
 
-            <div class="form-group">
-                <select required asp-for="Offering">
-                    <option value="">Select Offering</option>
-                    <option value="1ST SEMESTER">1ST SEMESTER</option>
-                    <option value="2ND SEMESTER">2ND SEMESTER</option>
-                    <option value="SUMMER">SUMMER</option>
-                </select>
-                <span asp-validation-for="Offering" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <select required asp-for="Offering">
+                        <option value="">Select Offering</option>
+                        <option value="1ST SEMESTER">1ST SEMESTER</option>
+                        <option value="2ND SEMESTER">2ND SEMESTER</option>
+                        <option value="SUMMER">SUMMER</option>
+                    </select>
+                    <span asp-validation-for="Offering" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <select required asp-for="CourseCode">
-                    <option value="">Select Course Code</option>
-                    <option value="BSIT">BSIT</option>
-                    <option value="BSIS">BSIS</option>
-                    <option value="ACT">ACT</option>
-                </select>
-                <span asp-validation-for="CourseCode" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <select required asp-for="CourseCode">
+                        <option value="">Select Course Code</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BSIS">BSIS</option>
+                        <option value="ACT">ACT</option>
+                    </select>
+                    <span asp-validation-for="CourseCode" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <select required asp-for="CurriculumYear">
-                    <option value="">Select Curriculum Year</option>
-                    <option value="1ST YEAR">1ST YEAR</option>
-                    <option value="2ND YEAR">2ND YEAR</option>
-                    <option value="3RD YEAR">3RD YEAR</option>
-                    <option value="4TH YEAR">4TH YEAR</option>
-                </select>
-                <span asp-validation-for="CurriculumYear" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <select required asp-for="CurriculumYear">
+                        <option value="">Select Curriculum Year</option>
+                        <option value="1ST YEAR">1ST YEAR</option>
+                        <option value="2ND YEAR">2ND YEAR</option>
+                        <option value="3RD YEAR">3RD YEAR</option>
+                        <option value="4TH YEAR">4TH YEAR</option>
+                    </select>
+                    <span asp-validation-for="CurriculumYear" class="text-danger"></span>
+                </div>
 
 
-            <div class="form-buttons">
-                <button class="cancel-btn" onclick="location.href='@Url.Action("StudentList", "Admin")'">CANCEL</button>
-                <button type="submit" class="save-btn">SAVE</button>
-            </div>
-        </form>
+                <div class="form-buttons">
+                    <button class="cancel-btn" onclick="location.href='@Url.Action("StudentList", "Admin")'">CANCEL</button>
+                    <button type="submit" class="save-btn">SAVE</button>
+                </div>
+            </form>
+        </div>
     </div>
-
 @section Scripts {
     @{
         Html.PartialAsync("_ValidationScriptsPartial").GetAwaiter().GetResult();

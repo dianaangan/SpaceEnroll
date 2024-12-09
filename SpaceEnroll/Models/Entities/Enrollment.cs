@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpaceEnroll.Models.Entities
 {
@@ -8,6 +9,7 @@ namespace SpaceEnroll.Models.Entities
         [Required]
         public string StudentId { get; set; }
 
+        [Key]
         [Required]
         public string SubjectCode { get; set; }
 
