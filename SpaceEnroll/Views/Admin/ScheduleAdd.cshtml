@@ -4,109 +4,108 @@
     ViewData["Title"] = "Add Schedule";
     <link rel="stylesheet" href="~/css/Student.css" asp-append-version="true">
 }
-<div class="addRequisite-form-container">
-    <div class="addRequisite-form">
-        <h2 id="formTitle">SCHEDULE INFORMATION</h2>
 
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger custom-error" role="alert" id="tempDataAlert">
-                <span>@TempData["ErrorMessage"]</span>
-                <button type="button" class="close-btn" aria-label="Close" onclick="closeAlert()">&times;</button>
-            </div>
-        }
+<div class="addRequisite-form">
+    <h2 id="formTitle">SCHEDULE INFORMATION</h2>
 
-        <form asp-action="ScheduleAdd" method="post" id="scheduleForm">
-            <!-- Validation Summary -->
-            <div class="validation-summary">
-                <div asp-validation-summary="All" class="text-danger"></div>
-            </div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger custom-error" role="alert" id="tempDataAlert">
+            <span>@TempData["ErrorMessage"]</span>
+            <button type="button" class="close-btn" aria-label="Close" onclick="closeAlert()">&times;</button>
+        </div>
+    }
 
-            <div class="form-group">
-                <input type="text" placeholder="Subject Code" asp-for="SubjectCode" required />
-                <span asp-validation-for="SubjectCode" class="text-danger"></span>
-            </div>
+    <form asp-action="ScheduleAdd" method="post" id="scheduleForm">
+        <!-- Validation Summary -->
+        <div class="validation-summary">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
 
-            <div class="form-group">
-                <input type="text" placeholder="Start Time" asp-for="StartTime" value="" required
-                       onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <input type="text" placeholder="Subject Code" asp-for="SubjectCode" required />
+            <span asp-validation-for="SubjectCode" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <input type="text" placeholder="End Time" asp-for="EndTime" value="" required
-                       onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <input type="text" placeholder="Start Time" asp-for="StartTime" value="" required
+                   onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" />
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="text" placeholder="End Time" asp-for="EndTime" value="" required
+                   onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
 
 
 
-            <div class="form-group">
-                <select asp-for="Days" required>
-                    <option value="" disabled selected>Select Days</option>
-                    <option value="M">M</option>
-                    <option value="T">T</option>
-                    <option value="W">W</option>
-                    <option value="TH">TH</option>
-                    <option value="F">F</option>
-                    <option value="S">S</option>
-                    <option value="MW">MW</option>
-                    <option value="MF">MF</option>
-                    <option value="MT">MT</option>
-                    <option value="TW">TW</option>
-                    <option value="WF">WF</option>
-                    <option value="THS">THS</option>
-                    <option value="FS">FS</option>
-                    <option value="MWF">MWF</option>
-                    <option value="MWS">MWS</option>
-                    <option value="MTH">MTH</option>
-                    <option value="TTHS">TTHS</option>
-                    <option value="MWTH">MWTH</option>
-                    <option value="WFS">WFS</option>
-                </select>
-                <span asp-validation-for="Days" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <select asp-for="Days" required>
+                <option value="" disabled selected>Select Days</option>
+                <option value="M">M</option>
+                <option value="T">T</option>
+                <option value="W">W</option>
+                <option value="TH">TH</option>
+                <option value="F">F</option>
+                <option value="S">S</option>
+                <option value="MW">MW</option>
+                <option value="MF">MF</option>
+                <option value="MT">MT</option>
+                <option value="TW">TW</option>
+                <option value="WF">WF</option>
+                <option value="THS">THS</option>
+                <option value="FS">FS</option>
+                <option value="MWF">MWF</option>
+                <option value="MWS">MWS</option>
+                <option value="MTH">MTH</option>
+                <option value="TTHS">TTHS</option>
+                <option value="MWTH">MWTH</option>
+                <option value="WFS">WFS</option>
+            </select>
+            <span asp-validation-for="Days" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <select asp-for="Section" required>
-                    <option value="" disabled selected>Select Section</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="G">G</option>
-                    <option value="H">H</option>
-                    <option value="I">I</option>
-                </select>
-                <span asp-validation-for="Section" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <select asp-for="Section" required>
+                <option value="" disabled selected>Select Section</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+            </select>
+            <span asp-validation-for="Section" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <input type="text" placeholder="Room" asp-for="Room" required />
-                <span asp-validation-for="Room" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <input type="text" placeholder="Room" asp-for="Room" required />
+            <span asp-validation-for="Room" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <select asp-for="SchoolYear" required>
-                    <option value="" disabled selected>Select School Year</option>
-                    <option value="2023 - 2024">2023 - 2024</option>
-                    <option value="2024 - 2025">2024 - 2025</option>
-                    <option value="2026 - 2027">2026 - 2027</option>
-                    <option value="2027 - 2028">2027 - 2028</option>
-                    <option value="2028 - 2029">2028 - 2029</option>
-                    <option value="2029 - 2030">2029 - 2030</option>
-                </select>
-                <span asp-validation-for="SchoolYear" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <select asp-for="SchoolYear" required>
+                <option value="" disabled selected>Select School Year</option>
+                <option value="2023 - 2024">2023 - 2024</option>
+                <option value="2024 - 2025">2024 - 2025</option>
+                <option value="2026 - 2027">2026 - 2027</option>
+                <option value="2027 - 2028">2027 - 2028</option>
+                <option value="2028 - 2029">2028 - 2029</option>
+                <option value="2029 - 2030">2029 - 2030</option>
+            </select>
+            <span asp-validation-for="SchoolYear" class="text-danger"></span>
+        </div>
 
-            <div class="form-buttons">
-                <button type="button" class="cancel-btn" onclick="location.href='@Url.Action("ScheduleList", "Admin")'">CANCEL</button>
-                <button type="submit" class="save-btn">SAVE</button>
-            </div>
-        </form>
-    </div>
+        <div class="form-buttons">
+            <button type="button" class="cancel-btn" onclick="location.href='@Url.Action("ScheduleList", "Admin")'">CANCEL</button>
+            <button type="submit" class="save-btn">SAVE</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
