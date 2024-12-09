@@ -5,6 +5,57 @@
     <link rel="stylesheet" href="~/css/Student.css" asp-append-version="true">
 }
 
+<style>
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        .action-btn i {
+            font-size: 16px;
+        }
+
+        .action-btn span {
+            margin-left: 4px;
+        }
+
+    .add-btn {
+        background-color: #f3f0ff;
+        color: #6d44b8;
+    }
+
+        .add-btn:hover {
+            background-color: #e9dfff;
+        }
+
+    .remove-btn {
+        background-color: #fff0f0;
+        color: #dc2626;
+    }
+
+        .remove-btn:hover {
+            background-color: #ffe0e0;
+        }
+
+    .action-btn:focus {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+    }
+
+    /* Add smooth transition for all interactive states */
+    .action-btn, .action-btn i {
+        transition: all 0.2s ease-in-out;
+    }
+</style>
+
 <div class="container1">
     <h3 class="h3-first"><i class="fa1 fa-solid fa-user-graduate fa1-2x"></i>Student Information</h3>
 
@@ -44,6 +95,7 @@
         <input type="text" class="form-control" placeholder="Encoder" asp-for="Encoder" required />
         <span asp-validation-for="Encoder" class="text-danger"></span>
     </div>
+    <button class="save-btn" onclick="saveEnrollment()">Save</button>
 
 </div>
 
@@ -67,6 +119,7 @@
 
 <div class="container3">
     <h3 class="h3-Third"><i class="fa1 fa-solid fa-building-columns fa1-1x"></i>Schedule Information</h3>
+    <h3 class="h6-First">UNITS:</h3>
     <table>
         <thead>
             <tr>
@@ -84,15 +137,75 @@
 
 
 <script>
-
-
     document.addEventListener('DOMContentLoaded', function () {
         loadSubjects();
+        calculateTotalUnits(); // Initialize units display
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        loadSubjects();
-    });
+    // Helper function to parse time string into minutes since midnight
+    function timeToMinutes(timeStr) {
+        const [time, period] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':').map(Number);
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+        return hours * 60 + minutes;
+    }
+
+    // Helper function to check if two time ranges overlap
+    function hasTimeOverlap(time1, time2) {
+        const [start1, end1] = time1.split('-').map(t => timeToMinutes(t.trim()));
+        const [start2, end2] = time2.split('-').map(t => timeToMinutes(t.trim()));
+        return !(end1 <= start2 || start1 >= end2);
+    }
+
+    // Helper function to check if two day patterns have any days in common
+    function hasCommonDays(days1, days2) {
+        // Convert day patterns into arrays of individual days
+        const expandDays = (days) => {
+            const dayMap = {
+                'M': ['M'], 'T': ['T'], 'W': ['W'], 'TH': ['TH'], 'F': ['F'], 'S': ['S'],
+                'MW': ['M', 'W'], 'MF': ['M', 'F'], 'MT': ['M', 'T'],
+                'TW': ['T', 'W'], 'WF': ['W', 'F'], 'THS': ['TH', 'S'],
+                'FS': ['F', 'S'], 'MWF': ['M', 'W', 'F'], 'MWS': ['M', 'W', 'S'],
+                'MTH': ['M', 'TH'], 'TTHS': ['T', 'TH', 'S'],
+                'MWTH': ['M', 'W', 'TH'], 'WFS': ['W', 'F', 'S']
+            };
+            return dayMap[days] || [];
+        };
+
+        const daysArr1 = expandDays(days1);
+        const daysArr2 = expandDays(days2);
+
+        return daysArr1.some(day => daysArr2.includes(day));
+    }
+
+    // Function to check if a schedule has conflicts with existing schedules
+    function hasScheduleConflict(newSchedule, existingSchedules) {
+        return existingSchedules.some(existing => {
+            const daysConflict = hasCommonDays(existing.days, newSchedule.days);
+            const timeConflict = hasTimeOverlap(existing.time, newSchedule.time);
+            return daysConflict && timeConflict;
+        });
+    }
+
+    // Function to calculate total units
+    function calculateTotalUnits() {
+        const rows = document.querySelector('.container3 table tbody').getElementsByTagName('tr');
+        let totalUnits = 0;
+
+        for (const row of rows) {
+            const units = parseFloat(row.cells[2].textContent);
+            if (!isNaN(units)) {
+                totalUnits += units;
+            }
+        }
+
+        // Update the UNITS display
+        const unitsDisplay = document.querySelector('.h6-First');
+        unitsDisplay.textContent = `UNITS: ${totalUnits.toFixed(1)}`;
+
+        return totalUnits;
+    }
 
     async function loadSubjects() {
         try {
@@ -114,9 +227,10 @@
                     <td>${subject.days}</td>
                     <td>${subject.time}</td>
                     <td>
-                      <button class="btn-add" onclick="addToSchedule(this)" style="background: none; border: none; cursor: pointer; display: inline;">
-                                       <i class="fa-solid  fa-calendar-plus fa-lg" style="color:#6d44b8;"></i>
-                       </button>
+                        <button class="action-btn add-btn" onclick="addToSchedule(this)">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add</span>
+                        </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -128,18 +242,34 @@
     }
 
     function addToSchedule(button) {
-        // Get the row that contains the button
         const sourceRow = button.closest('tr');
+        const newSchedule = {
+            days: sourceRow.cells[3].textContent,
+            time: sourceRow.cells[4].textContent
+        };
 
-        // Create a new row for container3
+        // Get existing schedules from container3
+        const existingSchedules = Array.from(
+            document.querySelector('.container3 table tbody').getElementsByTagName('tr')
+        ).map(row => ({
+            days: row.cells[3].textContent,
+            time: row.cells[4].textContent
+        }));
+
+        // Check for schedule conflicts
+        if (hasScheduleConflict(newSchedule, existingSchedules)) {
+            alert('Schedule conflict detected! This time slot overlaps with an existing schedule.');
+            return;
+        }
+
+        // Create the new row for container3
         const newRow = sourceRow.cloneNode(true);
-
-        // Change the button to a remove button
         const buttonCell = newRow.querySelector('td:last-child');
         buttonCell.innerHTML = `
-                   <button class="btn-remove" onclick="removeFromSchedule(this)" style="background: none; border: none; cursor: pointer; display: inline;">
-                                    <i class="fa-solid  fa-calendar-xmark fa-lg" style="color: #6d44b8"></i>
-                   </button>
+            <button class="action-btn remove-btn" onclick="removeFromSchedule(this)">
+                <i class="fas fa-times-circle"></i>
+                <span>Remove</span>
+            </button>
         `;
 
         // Add the new row to container3
@@ -148,29 +278,33 @@
 
         // Remove the original row from container2
         sourceRow.remove();
+
+        // Update total units
+        calculateTotalUnits();
     }
 
     function removeFromSchedule(button) {
-        // Get the row that contains the button
         const sourceRow = button.closest('tr');
-
-        // Create a new row for container2
         const newRow = sourceRow.cloneNode(true);
 
-        // Change back to add button
         const buttonCell = newRow.querySelector('td:last-child');
         buttonCell.innerHTML = `
-                <button class="btn-add" onclick="addToSchedule(this)" style="background: none; border: none; cursor: pointer; display: inline;">
-                         <i class="fa-solid fa-calendar-plus fa-lg" style="color: #6d44b8;"></i>
-                </button>
+            <button class="action-btn add-btn" onclick="addToSchedule(this)">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add</span>
+            </button>
         `;
 
-        // Add the row back to container2
         const container2Tbody = document.querySelector('.container2 table tbody');
         container2Tbody.appendChild(newRow);
-
-        // Remove the row from container3
         sourceRow.remove();
+
+        // Update total units
+        calculateTotalUnits();
+    }
+
+    function closeAlert() {
+        document.getElementById('tempDataAlert').style.display = 'none';
     }
 
     document.getElementById("StudentId").addEventListener("keypress", function (event) {
@@ -205,5 +339,101 @@
             }
         }
     });
+
+    async function saveEnrollment() {
+        // Get all necessary input values
+        const studentId = document.getElementById('StudentId').value;
+        const studentName = document.getElementById('StudentName').value;
+        const dateEnrolled = document.getElementById('DateEnrolled').value;
+        const encoder = document.getElementById('Encoder').value;
+
+        // Validate Student ID and existence
+        if (!studentId) {
+            alert('Please enter a Student ID');
+            return;
+        }
+
+        if (!studentName) {
+            alert('Invalid Student ID. Please enter a valid Student ID and press Enter to verify');
+            return;
+        }
+
+        // Validate Date Enrolled
+        if (!dateEnrolled) {
+            alert('Please select an enrollment date');
+            return;
+        }
+
+        // Validate Encoder
+        if (!encoder) {
+            alert('Please enter an encoder name');
+            return;
+        }
+
+        // Get all subjects from container3
+        const subjectRows = document.querySelector('.container3 table tbody').getElementsByTagName('tr');
+
+        // Validate Schedule Information
+        if (subjectRows.length === 0) {
+            alert('Please add at least one subject to the schedule');
+            return;
+        }
+
+        // Create array of enrollment objects
+        const enrollments = Array.from(subjectRows).map(row => ({
+            studentId: studentId,
+            subjectCode: row.cells[0].textContent,
+            dateEnrolled: dateEnrolled,
+            encoder: encoder
+        }));
+
+        try {
+            // Send the data to the server
+            const response = await fetch('/Admin/SaveEnrollment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(enrollments)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Enrollment saved successfully!');
+                clearForm();
+            } else {
+                alert(result.message || 'Failed to save enrollment');
+            }
+        } catch (error) {
+            console.error('Error saving enrollment:', error);
+            alert('Failed to save enrollment. Please try again.');
+        }
+    }
+
+    // Helper function to clear the form after successful save
+    function clearForm() {
+        // Clear student information
+        document.getElementById('StudentId').value = '';
+        document.getElementById('StudentName').value = '';
+        document.getElementById('YearLevel').value = '';
+        document.getElementById('Course').value = '';
+        document.getElementById('DateEnrolled').value = '';
+        document.getElementById('Encoder').value = '';
+
+        // Clear the selected subjects table
+        document.querySelector('.container3 table tbody').innerHTML = '';
+
+        // Reload available subjects
+        loadSubjects();
+
+        // Reset units display
+        calculateTotalUnits();
+    }
+
 
 </script>
